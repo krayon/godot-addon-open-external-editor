@@ -1,3 +1,5 @@
+![UI](ui.png)
+
 # Raison D'être
 Godot's script editor is quite good, but if you're coming from Vim or Emacs, moving around can feel sluggish.
 It's already possible to write scripts in an external editor, but there's no way to quickly switch back to the built-in
