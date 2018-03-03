@@ -31,6 +31,12 @@ Exec Path:  gvim
 Exec Flags: "+normal {line}G{col}|" {file}
 ```
 
+### Terminal Vim
+```
+Exec Path: [terminal]
+Exec Flags: -e vim "+normal {line}G{col}|" {file}
+```
+
 ### Emacs
 ```
 Exec Path: emacs
