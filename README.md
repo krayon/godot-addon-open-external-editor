@@ -21,7 +21,7 @@ The result should look like `.../my-project/addons/open-external-editor/`
 In the editor settings (Editor->Editor Settings), find the section for defining an external editor (Text Editor->External).
 Make sure `Use External Editor` is **unchecked**, or the plugin won't do anything. `Exec Path` and `Exec Flags` should be set based on what editor you want to use (see below for common examples).
 
-You can optionally change the keyboard shortcut (Ctrl+ E by default) by editing the two constants defined at the top of `open_external_plugin.gd` in the plugin folder. (Eventually I'll come up with an easier way of doing this)
+You can optionally change the keyboard shortcut (Ctrl+ E by default) by editing the two constants defined at the top of `open_external_editor.gd` in the plugin folder. (Eventually I'll come up with an easier way of doing this)
 
 # `Exec Path` and `Exec Flags` examples
 
