@@ -83,11 +83,14 @@ func get_text_edit():
     var tab_cont1 = hsplit1.get_child(1)
     var current_script = script_editor.get_current_script()
     var open_scripts = script_editor.get_open_scripts()
-    for i in range(open_scripts.size()):
+    var i = 0
+    for child in tab_cont1.get_children():
+        if child.get_class() != "ScriptTextEditor":
+            continue
         if current_script == open_scripts[i]:
-            var editor1 = tab_cont1.get_child(i)
-            var editor2 = editor1.get_child(0)
-            return editor2.get_child(1)
+            var editor = child.get_child(0)
+            return editor.get_child(1)
+        i += 1
 
 func parse_exec_flags(flags):
     var text_edit = get_text_edit()
