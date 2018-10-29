@@ -28,12 +28,18 @@ const USE_EXTERNAL_EDITOR_SETTING = "text_editor/external/use_external_editor"
 const EXEC_PATH_SETTING = "text_editor/external/exec_path"
 const EXEC_FLAGS_SETTING = "text_editor/external/exec_flags"
 
+var godot_version
+
 var script_editor
 var editor_settings
 var button
 var shortcut
 
 func _enter_tree():
+    godot_version = Engine.get_version_info()
+    if godot_version["major"] < 3:
+        print("\"Open External Editor\" plugin requires Godot 3.0 or higher")
+        return
     script_editor = get_editor_interface().get_script_editor()
     editor_settings = get_editor_interface().get_editor_settings()
     var input_event = InputEventKey.new()
@@ -59,7 +65,8 @@ func _enter_tree():
     hbox1.add_child(button)
 
 func _exit_tree():
-    button.free()
+    if button != null:
+        button.free()
 
 func _input(event):
     if shortcut.is_shortcut(event) && !event.pressed && script_editor.is_visible_in_tree():
@@ -89,7 +96,10 @@ func get_text_edit():
             continue
         if current_script == open_scripts[i]:
             var editor = child.get_child(0)
-            return editor.get_child(1)
+            if godot_version["minor"] == 0:
+                return editor.get_child(1)
+            else:
+                return editor.get_child(0).get_child(1)
         i += 1
 
 func parse_exec_flags(flags):
