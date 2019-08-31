@@ -72,7 +72,7 @@ func _exit_tree():
         button.free()
 
 func _input(event):
-    if shortcut.is_shortcut(event) && !event.pressed && script_editor.is_visible_in_tree():
+    if shortcut && shortcut.is_shortcut(event) && !event.pressed && script_editor.is_visible_in_tree():
         open_external_editor()
 
 func open_external_editor():
