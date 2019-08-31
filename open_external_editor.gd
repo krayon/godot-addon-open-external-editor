@@ -82,7 +82,7 @@ func open_external_editor():
     if use_external_editor:
         return
     var args = parse_exec_flags(exec_flags)
-    if args == null:
+    if exec_path == null:
         return
     OS.execute(exec_path, args, false)
 
