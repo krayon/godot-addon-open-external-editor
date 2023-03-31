@@ -40,8 +40,9 @@ git submodule add -b gd3 \
 ```
 
 This will check out the Godot 3 branch of the addon as a submodule of your
-repository, under your project's `addons/` directory. If you ever need to clone
-again you should do so using either:
+repository, under your project's `addons/` directory.
+
+If you ever need to clone again you should do so using either:
 
 ```bash
 # Clone and then initialise and checkout submodules automatically
@@ -59,9 +60,11 @@ git submodule update
 ### From a downloaded archive
 
 If instead you'd like to download an archive, you can do so from the
-[releases/](releases) page. Once downloaded, extract it under your project's
-`addons` directory, creating it first if needed. eg. In Linux, it would be
-something like this:
+[Releases](https://github.com/krayon/godot-addon-open-external-editor/releases)
+page.
+
+Once downloaded, extract it under your project's `addons` directory, creating it
+first if needed. eg. In Linux, it would be something like this:
 
 ```bash
 mkdir -p addons/; cd addons/
@@ -133,7 +136,7 @@ MIT - see [LICENSE](LICENSE) file.
 
 ## Roadmap
 
-- Add to v3 Asset Library
+- [x] Add to v3 Asset Library - (pending) [Godot Asset Library entry](https://godotengine.org/asset-library/asset/7523)
 - Add Godot 4 Support
 - Add to v4 Asset Library
 - Add keybinding to editor (if possible) or project settings

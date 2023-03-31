@@ -38,8 +38,8 @@ var shortcut
 
 func _enter_tree():
     godot_version = Engine.get_version_info()
-    if godot_version["major"] < 3:
-        print("\"Open External Editor\" plugin requires Godot 3.0 or higher")
+    if godot_version["major"] != 3:
+        print("\"Open External Editor\" plugin requires Godot 3. A Godot 4 version is also available.")
         return
     script_editor = get_editor_interface().get_script_editor()
     editor_settings = get_editor_interface().get_editor_settings()
