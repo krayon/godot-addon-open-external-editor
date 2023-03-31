@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Krayon
+# Copyright (c) 2019-2023 Krayon
 # Copyright (c) 2018 Calvin Ikenberry.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -60,8 +60,10 @@ func _enter_tree():
     button = ToolButton.new()
     button.text = editor_settings.get_setting(EXEC_PATH_SETTING)
     if (button.text.find_last("/") >= 0): button.text = button.text.right(button.text.find_last("/")+1)
-    if (button.text == ""): button.text = "Ext. Editor"
-    button.hint_tooltip = "Open script in external editor (" + shortcut.get_as_text() + ")"
+    if (button.text == ""): button.text = "Set Ext. Editor"
+    button.hint_tooltip = "Open script in external editor"
+    if (shortcut && shortcut.get_as_text() != ""):
+        button.hint_tooltip += " (" + shortcut.get_as_text() + ")"
     button.connect("pressed", self, "open_external_editor")
     var vbox1 = script_editor.get_child(0)
     var hbox1 = vbox1.get_child(0)
