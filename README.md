@@ -26,6 +26,9 @@ and automatically reload it.
   - v3.4.5
   - v3.5.2
 
+- Godot 4 (`gd4`) version tested in:
+  - v4.0.1
+
 ## Installation
 
 ### As submodule
@@ -42,6 +45,15 @@ git submodule add -b gd3 \
 
 This will check out the Godot 3 branch of the addon as a submodule of your
 repository, under your project's `addons/` directory.
+
+For Godot 4 it's the same but a different branch:
+
+```bash
+# Godot 4
+git submodule add -b gd4 \
+    https://github.com/krayon/godot-addon-open-external-editor.git \
+    addons/open-external-editor
+```
 
 If you ever need to clone again you should do so using either:
 
@@ -62,7 +74,7 @@ git submodule update
 
 If instead you'd like to download an archive, you can do so from the
 [Releases](https://github.com/krayon/godot-addon-open-external-editor/releases)
-page.
+page. Make sure you select the right version!
 
 Once downloaded, extract it under your project's `addons` directory, creating it
 first if needed. eg. In Linux, it would be something like this:
@@ -138,7 +150,7 @@ MIT - see [LICENSE](LICENSE) file.
 ## Roadmap
 
 - [x] Add to v3 Asset Library - (pending) [Godot Asset Library entry](https://godotengine.org/asset-library/asset/7523)
-- Add Godot 4 Support
+- [x] Add Godot 4 Support
 - Add to v4 Asset Library
 - Add keybinding to editor (if possible) or project settings
 

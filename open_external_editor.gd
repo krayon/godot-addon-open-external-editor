@@ -21,7 +21,7 @@
 
 # See README.md for instructions
 
-tool
+@tool
 extends EditorPlugin
 
 const SHORTCUT_SCANCODE = KEY_E
@@ -36,37 +36,45 @@ var godot_version
 var script_editor
 var editor_settings
 var button
-var shortcut
+
+var shortcut = InputEventShortcut.new()
+
+func _get_plugin_name():
+    return "Open External Editor"
 
 func _enter_tree():
     godot_version = Engine.get_version_info()
-    if godot_version["major"] != 3:
-        print("This version of the \"Open External Editor\" plugin requires Godot 3. A Godot 4 version is also available.")
+    if godot_version["major"] < 4:
+        print("This version of the \"Open External Editor\" plugin requires Godot 4.0 or higher. A Godot 3 version is also available.")
         return
     script_editor = get_editor_interface().get_script_editor()
     editor_settings = get_editor_interface().get_editor_settings()
     var input_event = InputEventKey.new()
-    input_event.scancode = SHORTCUT_SCANCODE
+    input_event.physical_keycode = SHORTCUT_SCANCODE
     if SHORTCUT_MODIFIERS & KEY_MASK_ALT:
         input_event.alt = true
-    if SHORTCUT_MODIFIERS & KEY_MASK_CMD:
-        input_event.command = true
+    if OS.has_feature("OSX") or OS.has_feature("iOS"):
+        if SHORTCUT_MODIFIERS & KEY_MASK_CMD_OR_CTRL:
+            input_event.set_cmd_pressed(true)
     if SHORTCUT_MODIFIERS & KEY_MASK_CTRL:
-        input_event.control = true
+        input_event.set_ctrl_pressed(true)
     if SHORTCUT_MODIFIERS & KEY_MASK_META:
-        input_event.meta = true
+        input_event.set_meta_pressed(true)
     if SHORTCUT_MODIFIERS & KEY_MASK_SHIFT:
-        input_event.shift = true
-    shortcut = ShortCut.new()
-    shortcut.set_shortcut(input_event)
-    button = ToolButton.new()
+        input_event.set_shift_pressed(true)
+
+    var sc:Shortcut = Shortcut.new()
+    sc.set_events([input_event])
+    shortcut.set_shortcut(sc)
+
+    button = Button.new()
     button.text = editor_settings.get_setting(EXEC_PATH_SETTING)
-    if (button.text.find_last("/") >= 0): button.text = button.text.right(button.text.find_last("/")+1)
+    if (button.text.rfind("/") >= 0): button.text = button.text.right(button.text.length() - (button.text.rfind("/") + 1))
     if (button.text == ""): button.text = "Set Ext. Editor"
-    button.hint_tooltip = "Open script in external editor"
-    if (shortcut && shortcut.get_as_text() != ""):
-        button.hint_tooltip += " (" + shortcut.get_as_text() + ")"
-    button.connect("pressed", self, "open_external_editor")
+    button.tooltip_text = "Open script in external editor"
+    if (shortcut && shortcut.shortcut):
+        button.tooltip_text += " (" + shortcut.shortcut.get_as_text() + ")"
+    button.pressed.connect(self.open_external_editor)
     var vbox1 = script_editor.get_child(0)
     var hbox1 = vbox1.get_child(0)
     hbox1.add_child(button)
@@ -76,7 +84,7 @@ func _exit_tree():
         button.free()
 
 func _input(event):
-    if shortcut && shortcut.is_shortcut(event) && !event.pressed && script_editor.is_visible_in_tree():
+    if shortcut && shortcut.shortcut && shortcut.shortcut.matches_event(event) && !event.pressed && script_editor.is_visible_in_tree():
         open_external_editor()
 
 func open_external_editor():
@@ -88,25 +96,23 @@ func open_external_editor():
     var args = parse_exec_flags(exec_flags)
     if exec_path == null:
         return
-    OS.execute(exec_path, args, false)
+    OS.execute(exec_path, args)
 
 # This feels super hacky but whatever ¯\_(ツ)_/¯
 func get_text_edit():
     var vbox1 = script_editor.get_child(0)
     var hsplit1 = vbox1.get_child(1)
     var tab_cont1 = hsplit1.get_child(1)
+    var tab_cont2 = tab_cont1.get_child(0)
     var current_script = script_editor.get_current_script()
     var open_scripts = script_editor.get_open_scripts()
     var i = 0
-    for child in tab_cont1.get_children():
+    for child in tab_cont2.get_children():
         if child.get_class() != "ScriptTextEditor":
             continue
         if current_script == open_scripts[i]:
             var editor = child.get_child(0)
-            if godot_version["minor"] == 0:
-                return editor.get_child(1)
-            else:
-                return editor.get_child(0).get_child(0)
+            return editor.get_child(0).get_child(0)
         i += 1
 
 func parse_exec_flags(flags):
@@ -119,14 +125,14 @@ func parse_exec_flags(flags):
         return
     var project_path = ProjectSettings.globalize_path("res://")
     var script_path = ProjectSettings.globalize_path(script.resource_path)
-    if script_path.empty():
+    if script_path.is_empty():
         return
-    var line = text_edit.cursor_get_line() + 1
-    var column = text_edit.cursor_get_column() + 1
+    var line = text_edit.get_caret_line() + 1
+    var column = text_edit.get_caret_column() + 1
     flags = flags.replacen("{line}", str(max(1, line)))
     flags = flags.replacen("{col}", str(column))
     flags = flags.strip_edges().replace("\\\\", "\\")
-    var args = PoolStringArray()
+    var args = PackedStringArray()
     var from = 0
     var num_chars = 0
     var inside_quotes = false
