@@ -151,7 +151,7 @@ MIT - see [LICENSE](LICENSE) file.
 
 - [x] Add to v3 Asset Library - (pending) [Godot Asset Library entry](https://godotengine.org/asset-library/asset/7523)
 - [x] Add Godot 4 Support
-- Add to v4 Asset Library
+- [x] Add to v4 Asset Library - (pending) [Godot Asset Library entry](https://godotengine.org/asset-library/asset/7525)
 - Add keybinding to editor (if possible) or project settings
 
 ----
