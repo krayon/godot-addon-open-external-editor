@@ -18,7 +18,7 @@ and automatically reload it.
 
 ## Compatibility
 
-- Tested in:
+- Godot 3 (`gd3`) version tested in:
   - v3.0.6
   - v3.1.2
   - v3.2.3
@@ -34,6 +34,7 @@ If you use `git` as your Version Control System (VCS), you can You can install
 this as a submodule of your project as follows.
 
 ```bash
+# Godot 3
 git submodule add -b gd3 \
     https://github.com/krayon/godot-addon-open-external-editor.git \
     addons/open-external-editor
